@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Стань миллионером!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Отвечайте на вопросы и зарабатывайте!">
+    <meta name="theme-color" content="#a3ce4c">
+    <!-- Yandex.Metrika counter -->
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(55673383, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true
+        });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/55673383" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+     <!-- /Yandex.Metrika counter -->
+    <link rel="shortcut icon" href="images/business.png" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="reset.min.css">
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <script src="https://yandex.ru/games/sdk/v2"></script>
+</head>
+<body translate="no">
+<div class="start"></div>
+<div class="game" :class="[levels ? 'levels' : '']" >
+    <div class="blackout" v-show="blackout" @click="toggleRecords()"></div>
+    <div class="property">
+    <h1 class="name" v-show="menu">Правда или ложь</h1>
+    <div class="levels" v-show="levels">
+        <h2 class="levelHead">Стань миллионером!</h2>
+        <div class="levelsNames">
+            <div class="level" @click="startGame()">Начать игру</div>
+            <div class="level" @click="toggleRecords()">Рекорды</div>
+        </div>
+
+    </div>
+    <div class="content" v-show="content">
+        <div class="topMenu">
+            <div class="menu" @click="returnMenu"></div>
+            <div class="money">{{moneyQuestions[numOfQuestions].toLocaleString('de-DE')}}<img src="images/money-bag.svg" class="moneyQuestion"></div>
+        </div>
+        <div class="tips">
+            <div class="tip mistake" @click="useTip(0)"><p class="tipName" v-show="!usedTips[0]">Право на ошибку</p>
+                <div class="blackTip" v-show="usedTips[0]"></div></div>
+            <div class="tip fifty" @click="useTip(1)"><p class="tipName" v-show="!usedTips[1]">50/50</p>
+                <div class="blackTip" v-show="usedTips[1]"></div></div>
+            <div class="tip removeQuestion" @click="useTip(2)"><p class="tipName" v-show="!usedTips[2]">Замена вопроса</p>
+                <div class="blackTip" v-show="usedTips[2]"></div></div>
+            <div class="tip fifty" @click="useTip(3)"><p class="tipName" v-show="!usedTips[3]">50/50</p>
+                <div class="blackTip" v-show="usedTips[3]"></div></div>
+        </div>
+        <div class="question">
+            <div class="numOfQuestion">Вопрос {{numOfQuestions+1}}/15</div>
+            {{question}}
+        </div>
+        <div class="bottomMenu">
+            <div class="buttons">
+               <div class="variant" v-for="(el, index) in variants"
+                    :class="[activeVariant === index ? 'activeVariant': '',
+                            rightAnswer === index ? 'rightAnswer' : '',
+                            wrongAnswer === index ? 'wrongAnswer' : '']"
+                    @click="setAnswer(index)">{{el}}</div>
+            </div>
+        </div>
+        <button class="giveAnswer" :class="[activeVariant === -1 || !canGiveAnswer ? 'notGivenAnswer': '',
+        endGame ? 'newGame' : '', rightAnswer !== -1 ? 'nextLevel' : '' ]" @click="giveAnswer">{{endGame ? 'Новая игра' :
+            rightAnswer !== -1 ? 'Продолжить' : 'Ответить'}}</button>
+    </div>
+        <div class="result" v-if="recordSeen">
+            <button class="returnResult" @click="toggleRecords()">Закрыть</button>
+            <h2>Рекорды</h2>
+            <div>
+                <p>{{records.length === 0 ? 'Здесь появятся победы, в которых вы выиграли 5.000.000 рублей!' : ''}}</p>
+                <ul>
+                    <li class="record" v-for="el in records">5.000.000 рублей {{el}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="vue.min.js"></script>
+<script src="index.js"></script>
+<script src="sw.js" type="text/javascript"></script>
+<script>
+    if('serviceWorker' in navigator){
+        navigator.serviceWorker
+            .register('sw.js')
+            .then(function(reg) {
+                console.log('Registration succeeded. Scope is ' + reg.scope);
+            })
+            .catch(function(error) {
+                console.error('Trouble with sw: ', error);
+            });
+    }
+</script>
+</body>
+</html>
