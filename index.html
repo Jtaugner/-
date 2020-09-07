@@ -23,6 +23,7 @@
     <noscript><div><img src="https://mc.yandex.ru/watch/55673383" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
      <!-- /Yandex.Metrika counter -->
+    <link rel="preload" as="font" href="Electronica-Regular.otf">
     <link rel="shortcut icon" href="images/business.png" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="reset.min.css">
     <link rel="stylesheet" type="text/css" href="index.css">
@@ -70,7 +71,8 @@
                     @click="setAnswer(index)">{{el}}</div>
             </div>
         </div>
-        <button class="giveAnswer" :class="[activeVariant === -1 || !canGiveAnswer ? 'notGivenAnswer': '',
+        <button class="giveAnswer"
+                :class="[activeVariant === -1 || !canGiveAnswer ? 'notGivenAnswer': '',
         endGame ? 'newGame' : '', rightAnswer !== -1 ? 'nextLevel' : '' ]" @click="giveAnswer">{{endGame ? 'Новая игра' :
             rightAnswer !== -1 ? 'Продолжить' : 'Ответить'}}</button>
     </div>
@@ -78,8 +80,8 @@
             <button class="returnResult" @click="toggleRecords()">Закрыть</button>
             <h2>Рекорды</h2>
             <div>
-                <p>{{records.length === 0 ? 'Здесь появятся победы, в которых вы выиграли 5.000.000 рублей!' : ''}}</p>
-                <ul>
+                <p v-if="records.length === 0">Здесь появятся победы, в которых вы выиграли 5.000.000 рублей!</p>
+                <ul v-else>
                     <li class="record" v-for="el in records">5.000.000 рублей {{el}}</li>
                 </ul>
             </div>

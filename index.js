@@ -9,7 +9,10 @@ if (!localStars) {
         localStars.push(0);
     }
 }
-let advTime = true;
+let advTime = false;
+setTimeout(()=>{
+    advTime = true;
+}, 20000);
 let showAdv;
 let records = localStorage.getItem('records');
 if (records) {
@@ -111,7 +114,7 @@ const game = new Vue({
             this.activeVariant = variant;
         },
         giveAnswer() {
-            if (!this.canGiveAnswer) return;
+            if (!this.canGiveAnswer || this.activeVariant === -1) return;
             if (this.endGame) {
                 this.startGame();
                 return
@@ -196,10 +199,6 @@ const game = new Vue({
         })
     }
 });
-for(let i = 0; i < 100; i++){
-    console.log(questions[5][i]);
-    console.log(answers[5][i]);
-}
 
 function addNull(str) {
     return String(str).length === 1 ? '0' + str : str;
@@ -220,7 +219,7 @@ if (window.YaGames) {
                         advTime = false;
                         setTimeout(() => {
                             advTime = true;
-                        }, 210000);
+                        }, 190000);
                     }
                 }
             });

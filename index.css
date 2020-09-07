@@ -124,6 +124,15 @@ img {
   padding: 10px;
   cursor: pointer;
   color: #4f461b;
+  border-radius: 15px;
+}
+
+.level:hover {
+  transform: scale(0.99);
+}
+
+.level:active {
+  transform: scale(0.98);
 }
 
 /*Игра*/
@@ -132,9 +141,10 @@ img {
 }
 
 .menu {
-  background: url(images/menu.svg) center center no-repeat/100%;
-  width: 58px;
-  height: 58px;
+  background: url(images/menu.svg) center center no-repeat;
+  background-size: 100%;
+  width: 52px;
+  height: 52px;
   cursor: pointer;
 }
 
@@ -157,6 +167,12 @@ img {
   margin: 10px auto 0 auto;
   padding: 5px;
   width: 250px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.notGivenAnswer {
+  cursor: default;
 }
 
 .newGame {
@@ -180,6 +196,10 @@ img {
   outline: none;
 }
 
+.notGivenAnswer:active {
+  transform: none;
+}
+
 .variant {
   display: flex;
   justify-content: center;
@@ -195,6 +215,7 @@ img {
   color: black;
   word-break: break-word;
   cursor: pointer;
+  border-radius: 10px;
 }
 
 .activeVariant {
@@ -203,7 +224,7 @@ img {
 
 .rightAnswer {
   background-color: #c9f872;
-  animation: rightAnswer 0.7s linear forwards;
+  animation: rightAnswer 0.5s ease-in forwards;
 }
 
 @keyframes rightAnswer {
@@ -252,7 +273,7 @@ img {
   left: 0;
   top: 0;
   border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0.65);
   cursor: auto;
 }
 
@@ -268,15 +289,19 @@ img {
 }
 
 .fifty {
-  background: url(images/fifty.svg) center center no-repeat/100%;
+  background: url(images/fifty.svg) center center no-repeat;
 }
 
 .mistake {
-  background: url(images/mistake.svg) center center no-repeat/100%;
+  background: url(images/mistake.svg) center center no-repeat;
 }
 
 .removeQuestion {
-  background: url(images/question.svg) center center no-repeat/100%;
+  background: url(images/question.svg) center center no-repeat;
+}
+
+.fifty, .mistake, .removeQuestion {
+  background-size: 100%;
 }
 
 .money {
@@ -357,6 +382,7 @@ ul {
   right: 5px;
   top: 5px;
   padding: 2px 25px;
+  cursor: pointer;
 }
 
 @media (orientation: landscape) {
@@ -397,6 +423,10 @@ ul {
 
   .level {
     width: 400px;
+  }
+
+  .topMenu {
+    border-radius: 0 0 15px 15px;
   }
 }
 
