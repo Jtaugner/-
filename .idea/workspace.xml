@@ -2,19 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="23e2ebba-54a3-4db0-976e-dd114fafb72b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vue.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Архив 2.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Архив 3.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Архив 4.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Архив 5.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Архив.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/questions.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/index.css.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/index.scss" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -53,12 +44,12 @@
     <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/images" />
-      <recent name="$PROJECT_DIR$" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/images" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -147,7 +138,8 @@
       <workItem from="1578488540762" duration="174000" />
       <workItem from="1580656132621" duration="170000" />
       <workItem from="1580656338990" duration="1437000" />
-      <workItem from="1599478270511" duration="1165000" />
+      <workItem from="1599478270511" duration="1993000" />
+      <workItem from="1599501063141" duration="1510000" />
     </task>
     <servers />
   </component>
