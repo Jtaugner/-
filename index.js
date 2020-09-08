@@ -269,11 +269,13 @@ const game = new Vue({
                     this.endGame = true;
                 }
             } else {
-                if(this.isSounds) sounds.rightAnswer.play();
+
 
                 if (this.numOfQuestions === 14) {
                     if(this.isSounds) sounds.win.play();
                     this.win();
+                }else{
+                    if(this.isSounds) sounds.rightAnswer.play();
                 }
             }
             this.rightAnswer = this.rightVariant;
