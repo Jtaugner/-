@@ -1,0 +1,36 @@
+
+{
+  "icons": [{
+    "src": "istm1.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }],
+  "yandex": {
+    "splash_screen_color": "#fff9db",
+    "cache": {
+      "resources": [
+        "index.html",
+        "images/balloons.svg",
+        "images/business.png",
+        "images/conversation.svg",
+        "images/fifty.png",
+        "images/menu.png",
+        "images/mistake.png",
+        "images/question.png",
+        "images/sounds.png",
+        "images/soundsOff.png",
+        "index.js",
+        "index.css",
+        "Montserrat-ExtraLight.ttf",
+        "notRight.mp3",
+        "questions.js",
+        "reset.min.css",
+        "right.mp3",
+        "vue.min.js",
+        "win.mp3",
+        "wrong.mp3",
+        "anotherVariant.mp3"
+      ]
+    }
+  }
+}

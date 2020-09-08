@@ -1,56 +1,62 @@
-let localStars = localStorage.getItem('stars') ? JSON.parse(localStorage.getItem('stars')) : false;
-let isSoundsLocal = localStorage.getItem('sounds');
+"use strict";
 
-if(isSoundsLocal){
+var localStars = localStorage.getItem('stars') ? JSON.parse(localStorage.getItem('stars')) : false;
+var isSoundsLocal = localStorage.getItem('sounds');
+
+if (isSoundsLocal) {
     isSoundsLocal = isSoundsLocal === "true";
-}else{
+} else {
     isSoundsLocal = true;
 }
 
 if (!localStars) {
     localStars = [];
-    for (let i = 0; i < questions.length; i++) localStars.push(0);
+
+    for (var i = 0; i < questions.length; i++) {
+        localStars.push(0);
+    }
 } else if (localStars.length !== questions.length) {
-    for (let i = 0; i < questions.length - localStars.length; i++) {
+    for (var _i = 0; _i < questions.length - localStars.length; _i++) {
         localStars.push(0);
     }
 }
+
 function giveParams(data) {
-    try{
+    try {
         window.ym(55673383, 'params', data);
-    }catch(ignored){}
+    } catch (ignored) {}
 }
 
-const NewAudioContext = (function () {
+var NewAudioContext = function () {
     try {
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
         window.audioContext = new window.AudioContext();
     } catch (e) {
         console.log("No Web Audio API support");
     }
-    var WebAudioAPISoundManager = function (context) {
+
+    var WebAudioAPISoundManager = function WebAudioAPISoundManager(context) {
         this.context = context;
         this.bufferList = {};
         this.playingSounds = {};
     };
+
     WebAudioAPISoundManager.prototype = {
-        addSound: function (url) {
+        addSound: function addSound(url) {
             var request = new XMLHttpRequest();
             request.open("GET", url, true);
             request.responseType = "arraybuffer";
-
             var self = this;
 
             request.onload = function () {
-                self.context.decodeAudioData(
-                    request.response,
-                    function (buffer) {
-                        if (!buffer) {
-                            console.log('error decoding file data: ' + url);
-                            return;
-                        }
-                        self.bufferList[url] = buffer;
-                    });
+                self.context.decodeAudioData(request.response, function (buffer) {
+                    if (!buffer) {
+                        console.log('error decoding file data: ' + url);
+                        return;
+                    }
+
+                    self.bufferList[url] = buffer;
+                });
             };
 
             request.onerror = function () {
@@ -59,7 +65,7 @@ const NewAudioContext = (function () {
 
             request.send();
         },
-        stopSoundWithUrl: function (url) {
+        stopSoundWithUrl: function stopSoundWithUrl(url) {
             if (this.playingSounds.hasOwnProperty(url)) {
                 for (var i in this.playingSounds[url]) {
                     if (this.playingSounds[url].hasOwnProperty(i)) {
@@ -69,10 +75,12 @@ const NewAudioContext = (function () {
             }
         }
     };
-    var WebAudioAPISound = function (url, options) {
+
+    var WebAudioAPISound = function WebAudioAPISound(url, options) {
         this.settings = {
             loop: false
         };
+
         for (var i in options) {
             if (options.hasOwnProperty(i)) {
                 this.settings[i] = options[i];
@@ -85,34 +93,37 @@ const NewAudioContext = (function () {
         this.manager = window.webAudioAPISoundManager;
         this.manager.addSound(this.url);
     };
+
     WebAudioAPISound.prototype = {
-        play: function () {
-            var buffer = this.manager.bufferList[this.url];
-            //Only play if it loaded yet
+        play: function play() {
+            var buffer = this.manager.bufferList[this.url]; //Only play if it loaded yet
+
             if (typeof buffer !== "undefined") {
                 var source = this.makeSource(buffer);
                 source.loop = this.settings.loop;
                 source.start(0);
+
                 if (!this.manager.playingSounds.hasOwnProperty(this.url)) {
                     this.manager.playingSounds[this.url] = [];
                 }
+
                 this.manager.playingSounds[this.url].push(source);
             }
         },
-        stop: function () {
+        stop: function stop() {
             this.manager.stopSoundWithUrl(this.url);
         },
-        getVolume: function () {
+        getVolume: function getVolume() {
             return this.translateVolume(this.volume, true);
         },
         //Expect to receive in range 0-100
-        setVolume: function (volume) {
+        setVolume: function setVolume(volume) {
             this.volume = this.translateVolume(volume);
         },
-        translateVolume: function (volume, inverse) {
+        translateVolume: function translateVolume(volume, inverse) {
             return inverse ? volume * 100 : volume / 100;
         },
-        makeSource: function (buffer) {
+        makeSource: function makeSource(buffer) {
             var source = this.manager.context.createBufferSource();
             var gainNode = this.manager.context.createGain();
             source.connect(gainNode);
@@ -123,27 +134,29 @@ const NewAudioContext = (function () {
         }
     };
     return WebAudioAPISound;
-})();
-let sounds = {
+}();
+
+var sounds = {
     rightAnswer: new NewAudioContext('right.mp3'),
     wrongAnswer: new NewAudioContext('wrong.mp3'),
     tip: new NewAudioContext('anotherVariant.mp3'),
     notRight: new NewAudioContext('notRight.mp3'),
-    win: new NewAudioContext('win.mp3'),
+    win: new NewAudioContext('win.mp3')
 };
-
-let advTime = false;
-setTimeout(()=>{
+var advTime = false;
+setTimeout(function () {
     advTime = true;
 }, 20000);
-let showAdv;
-let records = localStorage.getItem('records');
+var showAdv;
+var records = localStorage.getItem('records');
+
 if (records) {
     records = JSON.parse(records);
 } else {
     records = [];
 }
-const game = new Vue({
+
+var game = new Vue({
     el: '.game',
     data: {
         menu: false,
@@ -173,8 +186,7 @@ const game = new Vue({
         rightVariant: -1,
         rightAnswer: -1,
         wrongAnswer: -1,
-        moneyQuestions: [500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 250000, 500000, 800000, 1250000,
-            2000000, 3000000, 5000000],
+        moneyQuestions: [500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 250000, 500000, 800000, 1250000, 2000000, 3000000, 5000000],
         nGame: 0,
         usedTips: [false, false, false, false],
         rightMistake: false,
@@ -182,13 +194,13 @@ const game = new Vue({
         records: records,
         recordSeen: false,
         isSounds: isSoundsLocal
-
     },
     methods: {
-        startGame() {
+        startGame: function startGame() {
             if (showAdv && advTime) {
                 showAdv();
             }
+
             this.numOfQuestions = 0;
             this.nGame++;
             this.getQuestion();
@@ -199,148 +211,175 @@ const game = new Vue({
             this.rightMistake = false;
             this.usedTips = [false, false, false, false];
         },
-        getQuestion() {
+        getQuestion: function getQuestion() {
             this.rightMistake = false;
             this.numQ = Math.floor(Math.random() * questions[this.numOfQuestions].length);
             this.question = questions[this.numOfQuestions][this.numQ];
         },
-        getVariants() {
+        getVariants: function getVariants() {
+            var _this = this;
+
             this.activeVariant = -1;
             this.rightAnswer = -1;
             this.wrongAnswer = -1;
             this.variants = ['', '', '', ''];
-            let possibleVariants = [0, 1, 2, 3];
-            let variants = [];
-            for (let i = 0; i < 4; i++) {
-                let index = Math.floor(Math.random() * possibleVariants.length);
-                let rand = possibleVariants[index];
-                if (i === 0) {
+            var possibleVariants = [0, 1, 2, 3];
+            var variants = [];
+
+            for (var _i2 = 0; _i2 < 4; _i2++) {
+                var index = Math.floor(Math.random() * possibleVariants.length);
+                var rand = possibleVariants[index];
+
+                if (_i2 === 0) {
                     this.rightVariant = rand;
                 }
-                variants[rand] = answers[this.numOfQuestions][this.numQ][i];
+
+                variants[rand] = answers[this.numOfQuestions][this.numQ][_i2];
                 possibleVariants.splice(index, 1);
             }
-            let thisgame = this.nGame;
+
+            var thisgame = this.nGame;
             this.canGiveAnswer = false;
-            for (let i = 0; i < 4; i++) {
-                setTimeout(() => {
-                    if (this.nGame !== thisgame) return;
-                    this.setVariant(i, variants[i]);
-                    if (i === 3) this.canGiveAnswer = true;
-                }, 750 * i + 750)
+
+            var _loop = function _loop(_i3) {
+                setTimeout(function () {
+                    if (_this.nGame !== thisgame) return;
+
+                    _this.setVariant(_i3, variants[_i3]);
+
+                    if (_i3 === 3) _this.canGiveAnswer = true;
+                }, 750 * _i3 + 750);
+            };
+
+            for (var _i3 = 0; _i3 < 4; _i3++) {
+                _loop(_i3);
             }
         },
-        setVariant(index, q) {
+        setVariant: function setVariant(index, q) {
             this.variants.splice(index, 1, q);
         },
-        setAnswer(variant) {
+        setAnswer: function setAnswer(variant) {
             if (this.rightAnswer !== -1 || this.variants[variant] === '') return;
             this.activeVariant = variant;
         },
-        toggleSounds(){
-          this.isSounds = !this.isSounds;
-          if(this.isSounds){
-              localStorage.setItem('sounds', 'true');
-              giveParams({'sounds': true});
-          }else{
-              localStorage.setItem('sounds', 'false');
-              giveParams({'sounds': false});
-          }
+        toggleSounds: function toggleSounds() {
+            this.isSounds = !this.isSounds;
+
+            if (this.isSounds) {
+                localStorage.setItem('sounds', 'true');
+                giveParams({
+                    'sounds': true
+                });
+            } else {
+                localStorage.setItem('sounds', 'false');
+                giveParams({
+                    'sounds': false
+                });
+            }
         },
-        giveAnswer() {
+        giveAnswer: function giveAnswer() {
             if (!this.canGiveAnswer || this.activeVariant === -1) return;
+
             if (this.endGame) {
                 this.startGame();
-                return
+                return;
             }
+
             if (this.rightAnswer !== -1) {
                 this.nextLevel();
                 return;
             }
+
             if (this.activeVariant !== this.rightVariant) {
                 this.wrongAnswer = this.activeVariant;
+
                 if (this.rightMistake) {
                     this.rightMistake = false;
                     this.activeVariant = -1;
-                    if(this.isSounds) sounds.notRight.play();
+                    if (this.isSounds) sounds.notRight.play();
                     return;
                 } else {
-                    if(this.isSounds) sounds.wrongAnswer.play();
+                    if (this.isSounds) sounds.wrongAnswer.play();
                     this.endGame = true;
                 }
             } else {
-
-
                 if (this.numOfQuestions === 14) {
-                    if(this.isSounds) sounds.win.play();
+                    if (this.isSounds) sounds.win.play();
                     this.win();
-                }else{
-                    if(this.isSounds) sounds.rightAnswer.play();
+                } else {
+                    if (this.isSounds) sounds.rightAnswer.play();
                 }
             }
+
             this.rightAnswer = this.rightVariant;
         },
-        nextLevel() {
+        nextLevel: function nextLevel() {
             this.numOfQuestions++;
             this.getQuestion();
             this.getVariants();
         },
-        returnMenu() {
+        returnMenu: function returnMenu() {
             this.content = false;
             this.endGame = false;
             this.levels = true;
         },
-        useTip(index) {
+        useTip: function useTip(index) {
             if (this.usedTips[index] === true || !this.canGiveAnswer) return;
+
             if (index === 0) {
                 this.rightMistake = true;
-                if(this.isSounds) sounds.tip.play();
+                if (this.isSounds) sounds.tip.play();
             } else if (index === 1 || index === 3) {
-                for (let i = 0; i < 4; i++) {
-                    if (this.variants[i] === '') return;
+                for (var _i4 = 0; _i4 < 4; _i4++) {
+                    if (this.variants[_i4] === '') return;
                 }
-                if(this.isSounds) sounds.tip.play();
+
+                if (this.isSounds) sounds.tip.play();
                 this.setFifty();
             } else if (index === 2) {
-                if(this.isSounds) sounds.tip.play();
+                if (this.isSounds) sounds.tip.play();
                 this.getQuestion();
                 this.getVariants();
             }
+
             this.usedTips.splice(index, 1, true);
         },
-        setFifty() {
+        setFifty: function setFifty() {
             this.activeVariant = -1;
-            let arr = [0, 1, 2, 3];
+            var arr = [0, 1, 2, 3];
             arr.splice(this.rightVariant, 1);
-            let rand1 = Math.floor(Math.random() * arr.length);
+            var rand1 = Math.floor(Math.random() * arr.length);
             this.variants.splice(arr[rand1], 1, '');
             arr.splice(rand1, 1);
-            let rand2 = Math.floor(Math.random() * arr.length);
+            var rand2 = Math.floor(Math.random() * arr.length);
             this.variants.splice(arr[rand2], 1, '');
         },
-        win() {
-            for (let i = 0; i < 4; i++) this.variants[i] = 'Победа';
+        win: function win() {
+            for (var _i5 = 0; _i5 < 4; _i5++) {
+                this.variants[_i5] = 'Победа';
+            }
+
             this.endGame = true;
             this.rightAnswer = -1;
             this.wrongAnswer = -1;
             this.question = 'Поздравляем! Вы победили и заработали 5.000.000 рублей! Продолжайте развивать себя, отвечая на вопросы игры!';
-            let date = new Date();
-            let d = date.getDay();
-            let m = date.getMonth();
-            let y = date.getFullYear();
+            var date = new Date();
+            var d = date.getDay();
+            var m = date.getMonth();
+            var y = date.getFullYear();
             date = addNull(d) + '/' + addNull(m) + '/' + y;
             this.records.push(date);
             localStorage.setItem('records', JSON.stringify(records));
         },
-        toggleRecords() {
+        toggleRecords: function toggleRecords() {
             this.blackout = !this.blackout;
             this.recordSeen = !this.recordSeen;
         }
     },
-    mounted: function () {
+    mounted: function mounted() {
         this.$nextTick(function () {
-            document.querySelector(".start").remove()
-        })
+            document.querySelector(".start").remove();
+        });
     }
 });
 
@@ -351,17 +390,29 @@ function addNull(str) {
 if (window.YaGames) {
     YaGames.init({
         adv: {
-            onAdvClose: wasShown => {
+            onAdvClose: function onAdvClose(wasShown) {
                 if (!wasShown) advTime = true;
             }
         }
-    }).then(ysdk => {
-        showAdv = () => {
+    }).then(function (ysdk) {
+        var isNativeCache = ysdk.yandexApp && ysdk.yandexApp.enabled;
+
+        if ('serviceWorker' in navigator && !isNativeCache) {
+            window.onload = function () {
+                navigator.serviceWorker.register('sw.js').then(function (reg) {
+                    console.log('Registration succeeded. Scope is ' + reg.scope);
+                }).catch(function (error) {
+                    console.error('Trouble with sw: ', error);
+                });
+            };
+        }
+
+        showAdv = function showAdv() {
             ysdk.adv.showFullscreenAdv({
                 callbacks: {
-                    onClose: function () {
+                    onClose: function onClose() {
                         advTime = false;
-                        setTimeout(() => {
+                        setTimeout(function () {
                             advTime = true;
                         }, 190000);
                     }

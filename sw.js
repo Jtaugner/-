@@ -1,20 +1,26 @@
 const CACHE_NAME = 'Milloner';
 const cacheList = [
     'index.html',
-    'vue.min.js',
-    'index.js',
-    'reset.min.css',
-    'index.css',
     'images/balloons.svg',
     'images/business.png',
-    'images/business.svg',
     'images/conversation.svg',
-    'images/fifty.svg',
-    'images/menu.svg',
-    'images/mistake.svg',
-    'images/money-bag.svg',
-    'images/question.svg',
-    'Electronica-Regular.otf',
+    'images/fifty.png',
+    'images/menu.png',
+    'images/mistake.png',
+    'images/question.png',
+    'images/sounds.png',
+    'images/soundsOff.png',
+    'index.js',
+    'index.css',
+    'Montserrat-ExtraLight.ttf',
+    'notRight.mp3',
+    'questions.js',
+    'reset.min.css',
+    'right.mp3',
+    'vue.min.js',
+    'win.mp3',
+    'wrong.mp3',
+    'anotherVariant.mp3',
 ];
 this.addEventListener('install', function (event) {
     event.waitUntil(
@@ -23,7 +29,7 @@ this.addEventListener('install', function (event) {
         })
     );
 });
-const CACHE_PREFIX = 'Milloner-1';
+const CACHE_PREFIX = 'Milloner-12';
 
 this.addEventListener('activate', function (event) {
     event.waitUntil(
