@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="23e2ebba-54a3-4db0-976e-dd114fafb72b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Electronica-Regular.otf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/fifty.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/mistake.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/question.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/index.css.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Montserrat-ExtraLight.ttf" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -146,7 +137,7 @@
       <workItem from="1580656338990" duration="1437000" />
       <workItem from="1599478270511" duration="1993000" />
       <workItem from="1599501063141" duration="2077000" />
-      <workItem from="1599572040749" duration="7089000" />
+      <workItem from="1599572040749" duration="7336000" />
     </task>
     <servers />
   </component>

@@ -15,6 +15,11 @@ if (!localStars) {
         localStars.push(0);
     }
 }
+function giveParams(data) {
+    try{
+        window.ym(55673383, 'params', data);
+    }catch(ignored){}
+}
 
 const NewAudioContext = (function () {
     try {
@@ -236,8 +241,10 @@ const game = new Vue({
           this.isSounds = !this.isSounds;
           if(this.isSounds){
               localStorage.setItem('sounds', 'true');
+              giveParams({'sounds': true});
           }else{
               localStorage.setItem('sounds', 'false');
+              giveParams({'sounds': false});
           }
         },
         giveAnswer() {
