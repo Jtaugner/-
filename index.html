@@ -46,7 +46,11 @@
     <div class="content" v-show="content">
         <div class="topMenu">
             <div class="menu" @click="returnMenu"></div>
-            <div class="money">{{moneyQuestions[numOfQuestions].toLocaleString('de-DE')}}<img src="images/money-bag.svg" class="moneyQuestion"></div>
+            <div class="money">{{moneyQuestions[numOfQuestions].toLocaleString('de-DE')}}<span class="moneyRouble">₽</span></div>
+            <div class="sounds"
+                 :class="[!isSounds ? 'soundsOff' : '']"
+                 @click="toggleSounds"
+            ></div>
         </div>
         <div class="tips">
             <div class="tip mistake" @click="useTip(0)"><p class="tipName" v-show="!usedTips[0]">Право на ошибку</p>

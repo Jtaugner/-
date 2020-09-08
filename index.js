@@ -1,4 +1,12 @@
 let localStars = localStorage.getItem('stars') ? JSON.parse(localStorage.getItem('stars')) : false;
+let isSoundsLocal = localStorage.getItem('sounds');
+
+if(isSoundsLocal){
+    isSoundsLocal = isSoundsLocal === "true";
+}else{
+    isSoundsLocal = true;
+}
+
 if (!localStars) {
     localStars = [];
     for (let i = 0; i < questions.length; i++) localStars.push(0);
@@ -7,6 +15,118 @@ if (!localStars) {
         localStars.push(0);
     }
 }
+
+const NewAudioContext = (function () {
+    try {
+        window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        window.audioContext = new window.AudioContext();
+    } catch (e) {
+        console.log("No Web Audio API support");
+    }
+    var WebAudioAPISoundManager = function (context) {
+        this.context = context;
+        this.bufferList = {};
+        this.playingSounds = {};
+    };
+    WebAudioAPISoundManager.prototype = {
+        addSound: function (url) {
+            var request = new XMLHttpRequest();
+            request.open("GET", url, true);
+            request.responseType = "arraybuffer";
+
+            var self = this;
+
+            request.onload = function () {
+                self.context.decodeAudioData(
+                    request.response,
+                    function (buffer) {
+                        if (!buffer) {
+                            console.log('error decoding file data: ' + url);
+                            return;
+                        }
+                        self.bufferList[url] = buffer;
+                    });
+            };
+
+            request.onerror = function () {
+                console.log('BufferLoader: XHR error');
+            };
+
+            request.send();
+        },
+        stopSoundWithUrl: function (url) {
+            if (this.playingSounds.hasOwnProperty(url)) {
+                for (var i in this.playingSounds[url]) {
+                    if (this.playingSounds[url].hasOwnProperty(i)) {
+                        this.playingSounds[url][i].stop(0);
+                    }
+                }
+            }
+        }
+    };
+    var WebAudioAPISound = function (url, options) {
+        this.settings = {
+            loop: false
+        };
+        for (var i in options) {
+            if (options.hasOwnProperty(i)) {
+                this.settings[i] = options[i];
+            }
+        }
+
+        this.url = url;
+        this.volume = 0.6;
+        window.webAudioAPISoundManager = window.webAudioAPISoundManager || new WebAudioAPISoundManager(window.audioContext);
+        this.manager = window.webAudioAPISoundManager;
+        this.manager.addSound(this.url);
+    };
+    WebAudioAPISound.prototype = {
+        play: function () {
+            var buffer = this.manager.bufferList[this.url];
+            //Only play if it loaded yet
+            if (typeof buffer !== "undefined") {
+                var source = this.makeSource(buffer);
+                source.loop = this.settings.loop;
+                source.start(0);
+                if (!this.manager.playingSounds.hasOwnProperty(this.url)) {
+                    this.manager.playingSounds[this.url] = [];
+                }
+                this.manager.playingSounds[this.url].push(source);
+            }
+        },
+        stop: function () {
+            this.manager.stopSoundWithUrl(this.url);
+        },
+        getVolume: function () {
+            return this.translateVolume(this.volume, true);
+        },
+        //Expect to receive in range 0-100
+        setVolume: function (volume) {
+            this.volume = this.translateVolume(volume);
+        },
+        translateVolume: function (volume, inverse) {
+            return inverse ? volume * 100 : volume / 100;
+        },
+        makeSource: function (buffer) {
+            var source = this.manager.context.createBufferSource();
+            var gainNode = this.manager.context.createGain();
+            source.connect(gainNode);
+            gainNode.gain.value = this.volume;
+            source.buffer = buffer;
+            gainNode.connect(this.manager.context.destination);
+            return source;
+        }
+    };
+    return WebAudioAPISound;
+})();
+let sounds = {
+    rightAnswer: new NewAudioContext('right.mp3'),
+    wrongAnswer: new NewAudioContext('wrong.mp3'),
+    tip: new NewAudioContext('anotherVariant.mp3'),
+    notRight: new NewAudioContext('notRight.mp3'),
+    win: new NewAudioContext('win.mp3'),
+};
+
 let advTime = false;
 setTimeout(()=>{
     advTime = true;
@@ -55,7 +175,8 @@ const game = new Vue({
         rightMistake: false,
         canGiveAnswer: false,
         records: records,
-        recordSeen: false
+        recordSeen: false,
+        isSounds: isSoundsLocal
 
     },
     methods: {
@@ -111,6 +232,14 @@ const game = new Vue({
             if (this.rightAnswer !== -1 || this.variants[variant] === '') return;
             this.activeVariant = variant;
         },
+        toggleSounds(){
+          this.isSounds = !this.isSounds;
+          if(this.isSounds){
+              localStorage.setItem('sounds', 'true');
+          }else{
+              localStorage.setItem('sounds', 'false');
+          }
+        },
         giveAnswer() {
             if (!this.canGiveAnswer || this.activeVariant === -1) return;
             if (this.endGame) {
@@ -126,12 +255,17 @@ const game = new Vue({
                 if (this.rightMistake) {
                     this.rightMistake = false;
                     this.activeVariant = -1;
+                    if(this.isSounds) sounds.notRight.play();
                     return;
                 } else {
+                    if(this.isSounds) sounds.wrongAnswer.play();
                     this.endGame = true;
                 }
             } else {
+                if(this.isSounds) sounds.rightAnswer.play();
+
                 if (this.numOfQuestions === 14) {
+                    if(this.isSounds) sounds.win.play();
                     this.win();
                 }
             }
@@ -148,15 +282,18 @@ const game = new Vue({
             this.levels = true;
         },
         useTip(index) {
-            if (this.usedTips[index] === true) return;
+            if (this.usedTips[index] === true || !this.canGiveAnswer) return;
             if (index === 0) {
-                this.rightMistake = true
+                this.rightMistake = true;
+                if(this.isSounds) sounds.tip.play();
             } else if (index === 1 || index === 3) {
                 for (let i = 0; i < 4; i++) {
                     if (this.variants[i] === '') return;
                 }
+                if(this.isSounds) sounds.tip.play();
                 this.setFifty();
             } else if (index === 2) {
+                if(this.isSounds) sounds.tip.play();
                 this.getQuestion();
                 this.getVariants();
             }
