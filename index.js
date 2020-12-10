@@ -158,7 +158,7 @@ if (records) {
 
 // for(let i = 0; i < questions.length; i++){
 //     for(let q = 0; q < questions[i].length; q++){
-//         if(questions[i][q].indexOf('пяльц') !== -1){
+//         if(questions[i][q].indexOf('Каков поп') !== -1){
 //             console.log(questions[i][q]);
 //             console.log(answers[i][q]);
 //         }
