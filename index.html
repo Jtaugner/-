@@ -85,9 +85,9 @@
             <button class="returnResult" @click="toggleRecords()">Закрыть</button>
             <h2>Рекорды</h2>
             <div>
-                <p v-if="records.length === 0">Здесь появятся победы, в которых вы выиграли 5.000.000 рублей!</p>
+                <p v-if="records.length === 0">Здесь появятся победы, в которых вы выиграли 5.000.000 виртуальных рублей!</p>
                 <ul v-else>
-                    <li class="record" v-for="el in records">5.000.000 рублей {{el}}</li>
+                    <li class="record" v-for="el in records">5.000.000₽ {{el}}</li>
                 </ul>
             </div>
         </div>
