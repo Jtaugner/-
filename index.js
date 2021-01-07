@@ -151,6 +151,7 @@ var showAdv;
 var records = localStorage.getItem('records');
 
 if (records) {
+    records = records.replace(/\//g, '.');
     records = JSON.parse(records);
 } else {
     records = [];
@@ -375,7 +376,7 @@ var game = new Vue({
             var d = date.getDay();
             var m = date.getMonth();
             var y = date.getFullYear();
-            date = addNull(d) + '/' + addNull(m) + '/' + y;
+            date = addNull(d) + '.' + addNull(m) + '.' + y;
             this.records.push(date);
             localStorage.setItem('records', JSON.stringify(records));
         },
