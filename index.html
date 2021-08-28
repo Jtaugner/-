@@ -92,6 +92,15 @@
             </div>
         </div>
     </div>
+
+
+
+    <div class="blackoutNotification" v-show="isNotification && content" @click="closeNotification"></div>
+    <div class="notification" v-show="isNotification && content">
+        <div class="closeNotification" @click="closeNotification"></div>
+        Уважаемые игроки! Напоминаем вам, что выигрыш является лишь игровым - вывести его нельзя. Удачной игры!
+    </div>
+
 </div>
 <script src="vue.min.js"></script>
 <script src="questions.js"></script>

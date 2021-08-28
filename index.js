@@ -1,7 +1,22 @@
 "use strict";
 
-var localStars = localStorage.getItem('stars') ? JSON.parse(localStorage.getItem('stars')) : false;
-var isSoundsLocal = localStorage.getItem('sounds');
+var localStars = getFromStorage('stars') ? JSON.parse(getFromStorage('stars')) : false;
+var isSoundsLocal = getFromStorage('sounds');
+
+
+function getFromStorage(name) {
+    try {
+        let val = localStorage.getItem(name);
+        if (val) return val;
+    } catch (e) {
+    }
+}
+
+function setToStorage(name, val) {
+    try {
+        localStorage.setItem(name, val);
+    } catch (e) {}
+}
 
 if (isSoundsLocal) {
     isSoundsLocal = isSoundsLocal === "true";
@@ -148,7 +163,7 @@ setTimeout(function () {
     advTime = true;
 }, 20000);
 var showAdv;
-var records = localStorage.getItem('records');
+var records = getFromStorage('records');
 
 if (records) {
     records = records.replace(/\//g, '.');
@@ -159,12 +174,17 @@ if (records) {
 
 // for(let i = 0; i < questions.length; i++){
 //     for(let q = 0; q < questions[i].length; q++){
-//         if(questions[i][q].indexOf('Каков поп') !== -1){
+//         if(questions[i][q].indexOf('хоть потоп') !== -1){
 //             console.log(questions[i][q]);
 //             console.log(answers[i][q]);
 //         }
 //     }
 // }
+
+let isNotificationLocal = !getFromStorage('isNotification');
+
+
+
 var game = new Vue({
     el: '.game',
     data: {
@@ -202,7 +222,8 @@ var game = new Vue({
         canGiveAnswer: false,
         records: records,
         recordSeen: false,
-        isSounds: isSoundsLocal
+        isSounds: isSoundsLocal,
+        isNotification: isNotificationLocal
     },
     methods: {
         startGame: function startGame() {
@@ -264,6 +285,10 @@ var game = new Vue({
                 _loop(_i3);
             }
         },
+        closeNotification(){
+          this.isNotification = false;
+          setToStorage('isNotification', 'true');
+        },
         setVariant: function setVariant(index, q) {
             this.variants.splice(index, 1, q);
         },
@@ -275,12 +300,12 @@ var game = new Vue({
             this.isSounds = !this.isSounds;
 
             if (this.isSounds) {
-                localStorage.setItem('sounds', 'true');
+                setToStorage('sounds', 'true');
                 giveParams({
                     'sounds': true
                 });
             } else {
-                localStorage.setItem('sounds', 'false');
+                setToStorage('sounds', 'false');
                 giveParams({
                     'sounds': false
                 });
@@ -374,11 +399,11 @@ var game = new Vue({
             this.question = 'Поздравляем! Вы победили и заработали 5.000.000 рублей! Продолжайте развивать себя, отвечая на вопросы игры!';
             var date = new Date();
             var d = date.getDate();
-            var m = date.getMonth();
+            var m = date.getMonth() + 1;
             var y = date.getFullYear();
             date = addNull(d) + '.' + addNull(m) + '.' + y;
             this.records.push(date);
-            localStorage.setItem('records', JSON.stringify(records));
+            setToStorage('records', JSON.stringify(records));
         },
         toggleRecords: function toggleRecords() {
             this.blackout = !this.blackout;
