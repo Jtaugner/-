@@ -358,7 +358,7 @@ var game = new Vue({
             this.levels = true;
         },
         useTip: function useTip(index) {
-            if (this.usedTips[index] === true || !this.canGiveAnswer) return;
+            if (this.usedTips[index] === true || !this.canGiveAnswer || this.rightAnswer !== -1) return;
 
             if (index === 0) {
                 this.rightMistake = true;
