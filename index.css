@@ -40,7 +40,7 @@ img {
 
 @font-face {
   font-family: "Xarrovv";
-  src: url(Montserrat-ExtraLight.ttf);
+  src: url(Montserrat-Light.ttf);
   font-weight: 400;
   font-style: normal;
 }
@@ -438,6 +438,7 @@ ul {
 @media (orientation: landscape) {
   .topMenu {
     height: 10%;
+    max-height: 100px;
   }
 
   .yes, .no, .next {
@@ -605,7 +606,7 @@ ul {
     top: 10px;
   }
 }
-@media (min-width: 600px) and (max-height: 500px) {
+@media (min-width: 600px) and (max-height: 550px) {
   .variant {
     width: 20%;
     height: 60px;
@@ -633,7 +634,7 @@ ul {
     padding: 5px 15px;
   }
 }
-@media (min-width: 600px) and (max-height: 310px) {
+@media (min-width: 600px) and (max-height: 350px) {
   .levelsNames {
     bottom: 0;
   }
@@ -700,6 +701,17 @@ ul {
 
   .numOfQuestion {
     font-size: 1rem;
+  }
+}
+@media (min-height: 800px) {
+  .content {
+    justify-content: center;
+  }
+
+  .topMenu {
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 }
 
